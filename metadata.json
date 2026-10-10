@@ -1,0 +1,8 @@
+{
+  "name": "PlacementPilot AI",
+  "description": "AI-powered placement preparation platform for college students featuring resume analysis, skill gap tracking, 30-day personalized roadmaps, mock interviews, and DSA practice.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

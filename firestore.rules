@@ -1,0 +1,70 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default-deny safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // Student profile
+    match /users/{userId} {
+      allow get: if isOwner(userId) || isAdmin();
+      allow list: if isAdmin();
+      allow create: if isOwner(userId) && isValidId(userId);
+      allow update: if isOwner(userId) || isAdmin();
+      allow delete: if isOwner(userId) || isAdmin();
+
+      // Student resumes
+      match /resumes/{resumeId} {
+        allow read, write: if isOwner(userId) && isValidId(resumeId);
+      }
+
+      // Job Analyses
+      match /jobAnalyses/{analysisId} {
+        allow read, write: if isOwner(userId) && isValidId(analysisId);
+      }
+
+      // Roadmaps
+      match /roadmaps/{roadmapId} {
+        allow read, write: if isOwner(userId) && isValidId(roadmapId);
+      }
+
+      // Mock Interviews
+      match /mockInterviews/{interviewId} {
+        allow read, write: if isOwner(userId) && isValidId(interviewId);
+      }
+
+      // DSA Progress
+      match /dsaProgress/{problemId} {
+        allow read, write: if isOwner(userId) && isValidId(problemId);
+      }
+
+      // Company Prep
+      match /companyPrep/{prepId} {
+        allow read, write: if isOwner(userId) && isValidId(prepId);
+      }
+    }
+
+    // Admins registry (read-only for members, controlled)
+    match /admins/{adminId} {
+      allow read: if isSignedIn() && (request.auth.uid == adminId || isAdmin());
+      allow write: if false;
+    }
+  }
+}

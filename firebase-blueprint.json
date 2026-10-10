@@ -1,0 +1,143 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Student user profile containing college details, target role, and study preferences.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "college": { "type": "string" },
+        "degree": { "type": "string" },
+        "branch": { "type": "string" },
+        "graduationYear": { "type": "string" },
+        "targetRole": { "type": "string" },
+        "dailyStudyHours": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "email", "displayName"]
+    },
+    "ResumeRecord": {
+      "title": "ResumeRecord",
+      "description": "Analyzed student resume record with ATS evaluation, skills breakdown, and recommendations.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "fileName": { "type": "string" },
+        "fileSize": { "type": "number" },
+        "targetRole": { "type": "string" },
+        "atsScore": { "type": "number" },
+        "atsFeedback": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "fileName"]
+    },
+    "JobAnalysis": {
+      "title": "JobAnalysis",
+      "description": "Job description skill gap analysis comparing requirements against student qualifications.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "targetRole": { "type": "string" },
+        "company": { "type": "string" },
+        "jobDescription": { "type": "string" },
+        "matchPercentage": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "targetRole"]
+    },
+    "Roadmap": {
+      "title": "Roadmap",
+      "description": "30-Day customized placement preparation roadmap with day-by-day tasks and progress.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "targetRole": { "type": "string" },
+        "dailyHours": { "type": "number" },
+        "completedTasksCount": { "type": "number" },
+        "totalTasksCount": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "targetRole"]
+    },
+    "MockInterview": {
+      "title": "MockInterview",
+      "description": "AI mock interview session with question-answer dialogue, evaluations, and overall score.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "targetRole": { "type": "string" },
+        "category": { "type": "string" },
+        "difficulty": { "type": "string" },
+        "overallScore": { "type": "number" },
+        "completed": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "targetRole", "category"]
+    },
+    "DsaProgress": {
+      "title": "DsaProgress",
+      "description": "User progress status and personal notes for DSA curriculum problems.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "problemId": { "type": "string" },
+        "status": { "type": "string" },
+        "userNotes": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "problemId", "status"]
+    },
+    "CompanyPrep": {
+      "title": "CompanyPrep",
+      "description": "Company and role specific preparation checklist and round breakdown.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "companyName": { "type": "string" },
+        "roleName": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "companyName", "roleName"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Student user profile documents"
+    },
+    "/users/{userId}/resumes/{resumeId}": {
+      "schema": { "$ref": "#/entities/ResumeRecord" },
+      "description": "Student analyzed resume documents"
+    },
+    "/users/{userId}/jobAnalyses/{analysisId}": {
+      "schema": { "$ref": "#/entities/JobAnalysis" },
+      "description": "Student job description skill gap evaluations"
+    },
+    "/users/{userId}/roadmaps/{roadmapId}": {
+      "schema": { "$ref": "#/entities/Roadmap" },
+      "description": "Student 30-day preparation roadmaps"
+    },
+    "/users/{userId}/mockInterviews/{interviewId}": {
+      "schema": { "$ref": "#/entities/MockInterview" },
+      "description": "Student AI mock interview sessions"
+    },
+    "/users/{userId}/dsaProgress/{problemId}": {
+      "schema": { "$ref": "#/entities/DsaProgress" },
+      "description": "Student DSA problem solve progress"
+    },
+    "/users/{userId}/companyPrep/{prepId}": {
+      "schema": { "$ref": "#/entities/CompanyPrep" },
+      "description": "Student company-specific preparation guides"
+    }
+  }
+}
